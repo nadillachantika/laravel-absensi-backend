@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,3 +34,6 @@ Route::apiResource('/api-permissions', App\Http\Controllers\Api\PermissionContro
 
 //notes
 Route::apiResource('/api-notes', App\Http\Controllers\Api\NoteController::class)->middleware('auth:sanctum');
+
+// user
+Route::post('/create-user', [UserController::class, 'createUser'])->middleware('auth:sanctum');

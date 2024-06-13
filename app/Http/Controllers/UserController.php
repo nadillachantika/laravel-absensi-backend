@@ -85,4 +85,37 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
+
+    public function createUser(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8',
+        ],
+        [
+            'name.required' => 'Name is required',
+            'email.required' => 'Email is required',
+            'password.required' => 'Password is required',
+            'password.min' => 'Password must be at least 8 characters',
+            'email.unique' => 'Email already exists',
+
+        ]);
+
+        $user =  User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'role' => $request->role,
+            'password' => Hash::make($request->password),
+            'position' => $request->position,
+            'department' => $request->department,
+        ]);
+
+        return response([
+            'message' => 'User Successfully Created',
+            'user' => $user,
+        ], 200);
+    }
 }
